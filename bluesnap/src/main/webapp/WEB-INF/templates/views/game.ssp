@@ -1,0 +1,30 @@
+	<script type="text/javascript">
+		// on ready
+		$(function(){
+			$("#datepicker").datepicker();
+			$('#submit').click(function() {
+				var day = $('#datepicker').datepicker('getDate').getTime();
+				var time = parseInt($('#time').val(), 10);
+				var field = $('#field').val();
+				var opponent = $('#opponent').val();
+				var gameTime = day + (time * 60 * 60 * 1000); // convert hours into millis
+				$.post('/game', {time: gameTime, field: field, opponent: opponent});
+
+				$('#field').val('');
+				$('#opponent').val('');
+			});
+		});
+	</script>
+
+
+	<div id="datepicker"> </div>
+	<label for="time">Time:</label>
+	<select id="time">
+		<option value="21" selected>9pm</option>
+		<option value="22">10pm</option>
+		<option value="23">11pm</option>
+	</select>
+	<br/>
+	<label for="field">Field: </label><input id="field" type="text" /><br/>
+	<label for="opponent">Opponent: </label><input id="opponent" type="text" /><br/>
+	<button id="submit">Submit</button>

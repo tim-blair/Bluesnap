@@ -1,0 +1,56 @@
+#import(com.github.timblair.bluesnap._)
+#import(scala.collection.mutable.Map)
+#import(java.text.SimpleDateFormat)
+<%@ val games: List[Game] %>
+<%@ val players: List[Player] %>
+<%@ val avails: Map[Long, List[(Long, String)]] %>
+<%@ val gameAvailability: Map[Long, Long] %>
+
+<table>
+	<tr>
+		<td></td>
+		#for (g <- games)
+			<td id="game-${g.id}" align="center">
+				${new SimpleDateFormat("MMM d, h:mm a").format(g.time)}
+																				<!-- TODO: don't hardcode -->
+				<br />${g.opponent} <!--<a class="ics" data-game="${g.id}" data-player="1" href="javascript:void()">ics</a>-->
+				<br />${g.field}
+			</td>
+		#end
+	</tr>
+	#for (p <- players)
+		<tr>
+			<td>${p.name}</td>
+			#for (g <- games)
+				<td align="center">
+					<% val state = avails.get(p.id) match {
+						case Some(xs) => { 
+							val actual = xs.filter(x => x._1 == g.id)
+							if(actual.isEmpty)
+								"maybe"
+							else
+								actual(0)._2
+						}
+						case None => "maybe"
+					} %>
+					<% val clazz = state match {
+							case "yes" => "ui-icon-check green"
+							case "no" => "ui-icon-closethick red"
+							case _ => "ui-icon-help orange"
+						}
+					%>
+					<span class="ui-icon ${clazz}" data-game="${g.id}" data-player="${p.id}" data-state="${state}"></span>
+				</td>
+			#end
+		</tr>
+	#end
+	<tr>
+		<td><b>Total</b></td>
+		#for (g <- games)
+			<td align="center">
+				<span id="gameTotal-${g.id}">${gameAvailability(g.id)}</span>
+			</td>
+		#end
+	</tr>
+</table>
+<script src="/js/main.js" type="text/javascript"></script>

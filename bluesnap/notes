@@ -1,0 +1,18 @@
+install postgresql-9.1
+
+sudo -u postgres psql
+	alter user postgres password 'Admin1';
+
+vim /etc/postgresql/9.1/main/pg_hba.conf
+	local	all	all	trust
+	host	all	127.0.0.1/32	trust
+	
+then sudo -u postgres service postgresql restart
+
+createdb testdb
+
+// Start app server with my war file
+
+localhost:8080/db/create-tables
+localhost:8080/player?name=Tim%20Blair
+localhost:8080/game?time=1381539600000&opponent=K%20United&field=RIM%203

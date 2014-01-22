@@ -1,0 +1,12 @@
+.ui-icon.red {
+	background-image: url(images/ui-icons_cd0a0a_256x240.png);
+}
+.ui-icon.green {
+	background-image: url(images/ui-icons_14b723_256x240.png);
+}
+.ui-icon.orange {
+	background-image: url(images/ui-icons_f07618_256x240.png);
+}
+td {
+	padding-right: 10px;
+}
